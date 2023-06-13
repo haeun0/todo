@@ -1,0 +1,27 @@
+#DB
+spring:
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 12MB
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.0.62:3306/todo_haeun
+    username: root
+    password: green502
+    #mybatis
+mybatis:
+  type-aliases-package: com.green.todoapp.model
+  mapper-locations: mapper/**/*.xml
+
+#SWAGGER
+springdoc:
+  swagger-ui:
+    path: /swagger.html
+
+
+file:
+  dir: D:/download/todo/
+
+server:
+  port: 8081
