@@ -1,13 +1,12 @@
 package com.green.todoapp;
 
-import com.green.todoapp.model.TodoEntity;
-import com.green.todoapp.model.TodoInsDto;
-import com.green.todoapp.model.TodoVo;
+import com.green.todoapp.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,10 +17,12 @@ import java.util.List;
 import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@WebMvcTest(TodoService.class)
 @ExtendWith(SpringExtension.class)
 @Import({ TodoService.class })
 class TodoServiceTest {
@@ -63,6 +64,41 @@ class TodoServiceTest {
 
         assertEquals(mockList, actualList);
         verify(mapper).selTodo();
+
+    }
+
+    @Test
+    @DisplayName("TodoService - Todo 완료처리 토글")
+    void updFinish() {
+
+        //given
+        TodoFinishDto dto = new TodoFinishDto();
+        dto.setItodo(1);
+        TodoEntity entity = new TodoEntity();
+        entity.setItodo(dto.getItodo());
+        entity.setFinishYn(1);
+
+        //when
+        when(mapper.updfinish(entity)).thenReturn(1);
+        int result = service.updfinish(dto);
+
+        //then
+        assertEquals(0, result);
+
+
+        verify(mapper).updfinish(any());
+
+    }
+
+    @Test
+    @DisplayName("TodoService - Todo 삭제처리")
+    void delTodo() {
+        int expectedResult = 1;
+        when(mapper.delTodo(any(TodoEntity.class))).thenReturn(expectedResult);
+        int result = service.delTodo(anyInt());
+
+        assertEquals(expectedResult, result);
+        verify(mapper).delTodo(any(TodoEntity.class));
 
     }
 }

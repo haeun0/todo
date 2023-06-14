@@ -1,8 +1,6 @@
 package com.green.todoapp;
 
-import com.green.todoapp.model.TodoEntity;
-import com.green.todoapp.model.TodoInsDto;
-import com.green.todoapp.model.TodoVo;
+import com.green.todoapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +38,18 @@ public class TodoService {
         return mapper.selTodo();
     }
 
-    public int finTodo(TodoEntity entity){
-        return mapper.finTodo(entity);
+    public int updfinish(TodoFinishDto dto){
+        TodoEntity entity = new TodoEntity();
+        entity.setItodo(dto.getItodo());
+
+        int result = mapper.updfinish(entity);
+        System.out.println(entity.getFinishYn());
+        return entity.getFinishYn();
     }
 
+    public int delTodo(int itodo) {
+        TodoEntity entity = new TodoEntity();
+        entity.setItodo(itodo);
+        return mapper.delTodo(entity);
+    }
 }

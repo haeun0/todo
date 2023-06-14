@@ -14,10 +14,21 @@
         WHERE del_yn = 0
     </select>
 
-    <update id="finTodo">
+    <update id="updfinish">
+        <selectKey keyProperty="finishYn" resultType="TodoEntity" order="AFTER">
+            SELECT finish_yn finishYn FROM t_todo WHERE itodo = #{itodo}
+        </selectKey>
+
         UPDATE t_todo
-        SET finish_yn = 1
-        , finished_at = current_timestamp()
+        SET
+        finish_yn = 1 - finish_yn
+        , finished_at =  if(finished_at is NULL, current_timestamp(), NULL)
+        WHERE itodo = #{itodo}
+    </update>
+
+    <update id="delTodo">
+        UPDATE t_todo
+        SET del_yn = 1
         WHERE itodo = #{itodo}
     </update>
 
